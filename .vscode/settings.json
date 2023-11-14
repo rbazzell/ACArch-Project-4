@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "dist/lib/application-1.0.jar",
+        "dist/lib/swing-worker.jar"
+    ]
+}
