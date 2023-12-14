@@ -36,7 +36,13 @@ public class ReorderBuffer {
     return numRetirees;
   }
 
+  public void acceptStore(IssuedInst instruction) {
+    // TODO: Read value for reference register.
+  }
+
   public boolean retireInst() {
+    // This function returns true when HALT is reached, NOT when an instruction
+    //  is retired.
     // 3 cases
     // 1. regular reg dest inst
     // 2. isBranch w/ mispredict
@@ -56,13 +62,54 @@ public class ReorderBuffer {
 
     // TODO - this is where you look at the type of instruction and
     // figure out how to retire it properly
-
-      // if mispredict branch, won't do normal advance
-      if (shouldAdvance) {
-        numRetirees++;
-        buff[frontQ] = null;
-        frontQ = (frontQ + 1) % size;
+    if (!retiree.isComplete()) {
+      shouldAdvance = false;
+    }
+    else {
+      switch (retiree.getOpcode()) {
+        case BEQ:
+        case BNE:
+        case BLTZ:
+        case BLEZ:
+        case BGEZ:
+        case BGTZ:
+        case J:
+        case JAL:
+        case JR:
+        case JALR:
+          if (retiree.branchMispredicted()) {
+            // This is a mispredicted branch instruction.
+            //  When this happens, need to clear the buffer
+            //  and commit real branch target to PC.
+            // Need an accepting function here?
+            for (int i=0; i < size; i++) {
+              buff[i] = null;
+            }
+            regs.squashAll();
+            return false;
+          }
+          break;
+        case STORE:
+          // This is a store instruction. It's like the default but writes 
+          //  to memory instead of to the register file.
+          int storeAddress = regs.getReg(retiree.getMemReferenceRegister());
+          simulator.getMemory().setIntDataAtAddr(storeAddress, retiree.getWriteValue());
+          break;
+        default:
+          // This is everything else.
+          int destinationReg = retiree.getWriteReg();
+          regs.setReg(destinationReg, retiree.getWriteValue());
+          // Clear recorded register slot.
+          regs.setSlotForReg(destinationReg, -1);
       }
+    }
+
+    // if mispredict branch, won't do normal advance
+    if (shouldAdvance) {
+      numRetirees++;
+      buff[frontQ] = null;
+      frontQ = (frontQ + 1) % size;
+    }
 
     return false;
   }
@@ -73,6 +120,7 @@ public class ReorderBuffer {
     // could be store address source
 
     // TODO body of method
+    cdb.getDataTag();
   }
 
   public void updateInstForIssue(IssuedInst inst) {
