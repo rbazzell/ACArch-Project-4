@@ -63,7 +63,14 @@ public class IssueUnit {
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
           rob.updateInstForIssue(issuee);
           ((BranchUnit)fu).acceptIssue(issuee);
-          pc.incrPC();
+          // In theory, this sets the PC, but if not use the code below it.
+          simulator.btb.predictBranch(issuee);
+          /*if (issuee.getBranchPrediction() == true) {
+            pc.setPC(issuee.getBranchTgt());
+          }
+          else {
+            pc.incrPC();
+          }*/
         }
         break;
       case NONE:
@@ -86,7 +93,7 @@ public class IssueUnit {
     /* Branch prediction stuff
      * We check the BTB, and put prediction if branch, updating PC
      *     if pred taken, incr PC otherwise
-     * TODO
+     * DONE
      * 
      * 
      * We then send this to the ROB, which fills in the data fields

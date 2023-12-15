@@ -86,11 +86,13 @@ public class ReorderBuffer {
             // Need an accepting function here?
 
             // Clear entire ROB and set new values for ROB
+            numRetirees++;
             for (int i=0; i < size; i++) {
               buff[i] = null;
             }
             regs.squashAll();
             frontQ = 0;
+            rearQ = 0;
             return false;
           }
           break;
