@@ -414,6 +414,18 @@ public class PipelineSimulator {
         cdb.setDataValue(loader.getWriteData());
         cdb.setDataValid(true);
       }
+      else if (branchUnit.isRequestingWriteback()) {
+        branchUnit.setCanWriteback();
+        int branchTag = branchUnit.getWriteTag();
+        boolean branchTaken = false;
+        if (branchUnit.getWriteData() == 1) {
+          branchTaken = true;
+        }
+        else if (branchUnit.getWriteData() == 0) {
+          branchTaken = false;
+        }
+        reorder.buff[branchTag].setBranchTaken(branchTaken);
+      }
     }
 /*
     public static void main(String[] args) {

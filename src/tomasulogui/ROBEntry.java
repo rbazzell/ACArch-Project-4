@@ -48,6 +48,9 @@ public class ROBEntry {
 
   public void setBranchTaken(boolean result) {
     // TODO - maybe more than simple set
+    if (result != predictTaken) {
+      mispredicted = true;
+    }
   }
 
   public int getWriteReg() {
@@ -71,9 +74,6 @@ public class ROBEntry {
   }
 
   public void copyInstData(IssuedInst inst, int frontQ) {
-
-
-
     //update inst with data from entry
     // all src regs will either be assigned a tag, read from reg, or forwarded from ROB
     
