@@ -291,6 +291,7 @@ public class PipelineSimulator {
 
     public void step() {
       isHalted = reorder.retireInst();
+      // TODO: Check that this is in correct spot.
       reorder.readCDB(cdb);
 
       if (!isHalted) {
