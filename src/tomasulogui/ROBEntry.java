@@ -131,7 +131,7 @@ public class ROBEntry {
     } 
 
     if (opcode == INST_TYPE.JR || opcode == INST_TYPE.JALR) {
-      inst.setRegSrc1Value(inst.regSrc1);
+      writeValue = inst.regSrc1;
     }
     address = inst.getBranchTgt();
     predictTaken = inst.getBranchPrediction();

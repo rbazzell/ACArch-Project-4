@@ -116,7 +116,7 @@ public class ReorderBuffer {
             shouldAdvance = false;
 
             if (retiree.opcode == INST_TYPE.JR || retiree.opcode == INST_TYPE.JALR) {
-              simulator.setPC(retiree.rob.regs.getReg(31));
+              simulator.setPC(retiree.rob.regs.getReg(retiree.writeValue));
             } else if (!retiree.predictTaken) {
             //if taken
               simulator.setPC(retiree.address);

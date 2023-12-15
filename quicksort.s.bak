@@ -81,7 +81,7 @@ LABEL ENDSORT
 HALT
 End Assembly
 --begin main data
-Begin Data 4000 252
+Begin Data 4000 250
 50
 29
 6

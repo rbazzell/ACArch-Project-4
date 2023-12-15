@@ -289,15 +289,18 @@ public class PipelineSimulator {
       }
       System.out.println("Total clock cycles executed = " + instExec);
       System.out.println("Total inst retired = " + (reorder.getNumRetirees()+1));
+      System.out.println("Total stalls = " + (instExec - reorder.getNumRetirees()+1));
     }
 
     public void step() {
       isHalted = reorder.retireInst();
-
+      
       if (!isHalted) {
+        /*
         if (!quietMode) {
           System.out.println("fetching instruction from address " + pc.getPC());
         }
+        */  
         
         updateCDB();
         reorder.readCDB(cdb);

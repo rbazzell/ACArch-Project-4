@@ -27,7 +27,7 @@ public class BranchUnit extends FunctionalUnit {
       case JAL:
       case JR:
       case JALR:
-        return rest.getData1();
+        return writeData;
       default:
         return 0;
     }
