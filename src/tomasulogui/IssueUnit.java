@@ -62,7 +62,7 @@ public class IssueUnit {
         case NONE:
         default:
           return; 
-          //TODO - implement halting/no op operation
+          //TODO - implement halting/no op operation && store
       }
 
       
@@ -93,7 +93,6 @@ public class IssueUnit {
     private EXEC_TYPE getExecType(Instruction inst) {
       switch (Instruction.getNameFromOpcode(inst.getOpcode())) {
         case "LW":
-        case "SW":
           return EXEC_TYPE.LOAD;
         case "ADD":
         case "ADDI":
@@ -126,6 +125,7 @@ public class IssueUnit {
           return EXEC_TYPE.BRANCH;
         case "NOP":
         case "HALT":
+        case "SW":
         default:
           return EXEC_TYPE.NONE;
       }

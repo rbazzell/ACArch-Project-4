@@ -9,8 +9,8 @@ public class IntMult extends FunctionalUnit {
     }
 
     public int calculateResult(int station) {
-        int result = 0;
-        return result;
+        ReservationStation rest = stations[station];
+        return rest.getData1() * rest.getData2();
 
     }
 
