@@ -112,7 +112,7 @@ public class ReservationStation {
         //grabs first reg
         if (inst.getRegSrc1Valid()) {
           data1 = inst.getRegSrc1Value();
-          data1Valid = true;
+          data1Valid = true; 
         } else {
           tag1 = inst.getRegSrc1Tag();
         }
