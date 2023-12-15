@@ -134,6 +134,7 @@ public class ReservationStation {
         data1Valid = true;
         data2 = 0;
         data2Valid = true;
+        destTag = inst.getRegDestTag();
         address = inst.branchTgt;
         break;
       default:
