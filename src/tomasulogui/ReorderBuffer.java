@@ -125,12 +125,14 @@ public class ReorderBuffer {
     // could be store address source
 
     // TODO body of method
-    ROBEntry tagEntry = buff[cdb.getDataTag()];
-    // Check if tag points to active entry.
-    if (tagEntry != null && tagEntry.complete == false) {
-      tagEntry.setWriteValue(cdb.getDataValue());
+    if (cdb.dataValid) {
+      ROBEntry tagEntry = buff[cdb.getDataTag()];
+      // Check if tag points to active entry.
+      if (tagEntry != null && tagEntry.complete == false) {
+        tagEntry.setWriteValue(cdb.getDataValue());
+      }
+      // TODO: Handle stores
     }
-    // TODO: Handle stores
   }
 
   public void updateInstForIssue(IssuedInst inst) {

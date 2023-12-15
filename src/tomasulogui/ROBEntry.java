@@ -76,7 +76,6 @@ public class ROBEntry {
     instPC = inst.getPC();
     writeReg = inst.getRegDest();
 
-
     //update inst with data from entry
     inst.setRegDestTag(frontQ);
 

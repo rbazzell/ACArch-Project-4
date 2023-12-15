@@ -291,6 +291,7 @@ public class PipelineSimulator {
 
     public void step() {
       isHalted = reorder.retireInst();
+      reorder.readCDB(cdb);
 
       if (!isHalted) {
         if (!quietMode) {
