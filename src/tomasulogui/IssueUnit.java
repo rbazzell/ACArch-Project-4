@@ -94,7 +94,7 @@ public class IssueUnit {
     /* Branch prediction stuff
      * We check the BTB, and put prediction if branch, updating PC
      *     if pred taken, incr PC otherwise
-     * TODO
+     * DONE
      * 
      * 
      * We then send this to the ROB, which fills in the data fields

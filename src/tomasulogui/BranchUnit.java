@@ -17,38 +17,44 @@ public class BranchUnit
           rest.getDestTag();
           return 1;
         }
-        return 0;
+        break;
       case BNE:
         if (rest.getData1() != rest.getData2()) {
           return 1;
         }
+        break;
       case BLTZ:
         if (rest.getData1() < 0) {
           return 1;
         }
+        break;
       case BLEZ:
-        if (rest.getData1() != rest.getData2()) {
+        if (rest.getData1() <= 0) {
           return 1;
         }
+        break;
       case BGTZ:
-        if (rest.getData1() != rest.getData2()) {
+        if (rest.getData1() > 0) {
           return 1;
         }
+        break;
       case BGEZ:
-        if (rest.getData1() != rest.getData2()) {
+        if (rest.getData1() >= 0) {
           return 1;
         }
+        break;
       case J:
       case JAL:
       case JR:
       case JALR:
         return 1;
       default:
-        return -1;
+        return 0;
     }
-    }
+    return 0;
+  }
 
-    public int getExecCycles() {
-        return EXEC_CYCLES;
-    }
+  public int getExecCycles() {
+      return EXEC_CYCLES;
+  }
 }

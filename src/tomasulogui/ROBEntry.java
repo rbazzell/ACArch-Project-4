@@ -48,6 +48,9 @@ public class ROBEntry {
 
   public void setBranchTaken(boolean result) {
     // TODO - maybe more than simple set
+    if (result != predictTaken) {
+      mispredicted = true;
+    }
   }
 
   public int getWriteReg() {
