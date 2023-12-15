@@ -417,7 +417,6 @@ public class PipelineSimulator {
       else if (branchUnit.isRequestingWriteback()) {
         branchUnit.setCanWriteback();
         int branchTag = branchUnit.getWriteTag();
-        boolean branchPrediction = reorder.buff[branchTag].getPredictTaken();
         boolean branchTaken = false;
         if (branchUnit.getWriteData() == 1) {
           branchTaken = true;
