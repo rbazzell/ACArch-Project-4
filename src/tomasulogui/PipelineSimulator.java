@@ -41,7 +41,7 @@ public class PipelineSimulator {
       }
     }
 	
-	public PipelineSimulator(TomasuloGUIView view) {
+	  public PipelineSimulator(TomasuloGUIView view) {
       
       this("");
       this.view = view;
@@ -296,9 +296,9 @@ public class PipelineSimulator {
         if (!quietMode) {
           System.out.println("fetching instruction from address " + pc.getPC());
         }
-        reorder.readCDB(cdb);
-
+        
         updateCDB();
+        reorder.readCDB(cdb);
 
         divider.execCycle(cdb);
         multiplier.execCycle(cdb);
@@ -427,14 +427,13 @@ public class PipelineSimulator {
         reorder.buff[branchTag].setBranchTaken(branchTaken);
       }
     }
-
+/*
     public static void main(String[] args) {
       PipelineSimulator sim = new PipelineSimulator();
 //    sim.getMemory().printObjectCode();
       sim.simulate();
     }
-
+*/
     private void jbInit() throws Exception {
     }
-
-  }
+}

@@ -36,8 +36,9 @@ public class ReorderBuffer {
     return numRetirees;
   }
 
-  public void acceptStore(IssuedInst instruction) {
+  public void acceptStore(IssuedInst inst) {
     // TODO: Read value for reference register.
+    
   }
 
   public boolean retireInst() {
@@ -131,6 +132,7 @@ public class ReorderBuffer {
       // Check if tag points to active entry.
       if (tagEntry != null && tagEntry.complete == false) {
         tagEntry.setWriteValue(cdb.getDataValue());
+        tagEntry.complete = true;
       }
       // TODO: Handle stores
     }

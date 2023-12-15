@@ -75,13 +75,12 @@ public class IssueUnit {
         break;
       case NONE:
         if (issuee.getOpcode() == IssuedInst.INST_TYPE.STORE) {
-          if (rob.frontQ == rob.rearQ) {
-            rob.updateInstForIssue(issuee);
-            simulator.getCDB().setDataTag(issuee.regDestTag);
-            simulator.getCDB().setDataValue(issuee.getImmediate() + simulator.regs.getReg(issuee.getRegSrc1()));
-            simulator.getCDB().setDataValid(true);
-            pc.incrPC();
-          }
+          rob.updateInstForIssue(issuee);
+          pc.incrPC();
+        }
+        if (issuee.getOpcode() == IssuedInst.INST_TYPE.HALT) {
+          rob.updateInstForIssue(issuee);
+          pc.incrPC();
         }
       default:
         return; 
@@ -98,12 +97,12 @@ public class IssueUnit {
      * 
      * 
      * We then send this to the ROB, which fills in the data fields
-     * TODO INSIDE FU
+     * TODO
      * 
      * 
      * We then check the CDB, and see if it is broadcasting data we need,
      *    so that we can forward during issue
-     * TODO INSIDE FU
+     * TODO
     */
   }
     
