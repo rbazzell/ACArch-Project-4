@@ -121,9 +121,7 @@ public class ReservationStation {
         data2Valid = true;
 
         //if src2used, then it is a control op, so no dest
-        if (!inst.regSrc2Used) {
-          destTag = inst.getRegDestTag();
-        }
+        destTag = inst.getRegDestTag();
         break;
       case J:
       case JAL:
