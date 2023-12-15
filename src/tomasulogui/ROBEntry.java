@@ -13,7 +13,7 @@ public class ROBEntry {
   int writeValue = -1;
   // Register storing memory location for stores
   // MIGHT NOT NEED THIS IF IT'S JUST FROM CDB
-  int memoryLocationReg = -1;
+  int storeMemoryLocation = -1;
   // NEED BRANCH TARGET LOCATION?
 
   IssuedInst.INST_TYPE opcode;
@@ -55,12 +55,14 @@ public class ROBEntry {
     return writeReg;
   }
 
-  public int getMemReferenceRegister() {
-    // Returns the register of store which holds the memory location
-
-    return -1;
+  public int getStoreAddress() {
+    return storeMemoryLocation;
   }
 
+  public void setStoreAddress(int addr) {
+    storeMemoryLocation = addr;
+  }
+  
   public int getWriteValue() {
     return writeValue;
   }

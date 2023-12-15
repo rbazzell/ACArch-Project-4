@@ -96,7 +96,7 @@ public class ReorderBuffer {
         case STORE:
           // This is a store instruction. It's like the default but writes 
           //  to memory instead of to the register file.
-          int storeAddress = regs.getReg(retiree.getMemReferenceRegister());
+          int storeAddress = retiree.getStoreAddress();
           simulator.getMemory().setIntDataAtAddr(storeAddress, retiree.getWriteValue());
           break;
         default:
