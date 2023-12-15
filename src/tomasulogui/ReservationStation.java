@@ -120,11 +120,10 @@ public class ReservationStation {
         data2 = inst.getImmediate(); //always use immed
         data2Valid = true;
 
-        /*//if src2used, then it is a control op, so no dest
-        if (!inst.regSrc2Used) {
-          destTag = inst.getRegDestTag();
-        }TODO: CHECK THIS IS RIGHT*/
+
+        //if src2used, then it is a control op, so no dest
         destTag = inst.getRegDestTag();
+
         if (inst.determineIfBranch()) {
           address = inst.getBranchTgt();
         }

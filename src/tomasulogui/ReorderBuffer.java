@@ -36,9 +36,25 @@ public class ReorderBuffer {
     return numRetirees;
   }
 
-  public void acceptStore(IssuedInst inst) {
+  public boolean acceptStore(IssuedInst inst) {
     // TODO: Read value for reference register.
-    
+    if (isFull()) {
+      throw new MIPSException("updateInstForIssue: no ROB slot avail");
+    }
+    ROBEntry newEntry = new ROBEntry(this);
+    buff[rearQ] = newEntry;
+    newEntry.copyInstData(inst, rearQ);
+    if (inst.regSrc1Valid && inst.regSrc2Valid) {
+      newEntry.storeMemoryLocation = inst.regSrc1Value + inst.immediate;
+      rearQ = (rearQ + 1) % size;
+      newEntry.writeValue = inst.regSrc2Value;
+      newEntry.complete = true;
+
+      
+      return true;
+    }
+    return false;
+
   }
 
   public boolean retireInst() {
@@ -107,7 +123,10 @@ public class ReorderBuffer {
           int destinationReg = retiree.getWriteReg();
           regs.setReg(destinationReg, retiree.getWriteValue());
           // Clear recorded register slot.
-          regs.setSlotForReg(destinationReg, -1);
+          // but only if this is the most recent tag
+          if (regs.getSlotForReg(destinationReg) == frontQ) {
+            regs.setSlotForReg(destinationReg, -1);
+          }
       }
     }
 
