@@ -1,7 +1,7 @@
 package tomasulogui;
 
 public class BranchUnit
-  extends FunctionalUnit {
+    extends FunctionalUnit {
   public static final int EXEC_CYCLES = 1;
 
   public BranchUnit(PipelineSimulator sim) {
