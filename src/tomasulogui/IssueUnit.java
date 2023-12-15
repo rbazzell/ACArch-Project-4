@@ -23,15 +23,13 @@ public class IssueUnit {
     // 2. issuing to reservation station, if no structural hazard
     issuee = IssuedInst.createIssuedInst(inst);
     issuee.setPC(pc.getPC());
-    if (!rob.isFull()) {
-      rob.updateInstForIssue(issuee);
-    }
 
       // VVV Tells where to accept what VVV
     switch (getExecType(inst)) {
       case LOAD:
         fu = simulator.getLoader();
         if (((LoadBuffer)fu).isReservationStationAvail() && !rob.isFull()) {
+          rob.updateInstForIssue(issuee);
           ((LoadBuffer)fu).acceptIssue(issuee);
           pc.incrPC();
         }
@@ -39,6 +37,7 @@ public class IssueUnit {
       case ALU:
         fu = simulator.getALU();
         if (((IntAlu)fu).isReservationStationAvail() && !rob.isFull()) {
+          rob.updateInstForIssue(issuee);
           ((IntAlu)fu).acceptIssue(issuee);
           pc.incrPC();
         }
@@ -46,6 +45,7 @@ public class IssueUnit {
       case MULT:
         fu = simulator.getMult();
         if (((IntMult)fu).isReservationStationAvail() && !rob.isFull()) {
+          rob.updateInstForIssue(issuee);
           ((IntMult)fu).acceptIssue(issuee);
           pc.incrPC();
         }
@@ -53,6 +53,7 @@ public class IssueUnit {
       case DIV:
         fu = simulator.getDivider();
         if (((IntDivide)fu).isReservationStationAvail() && !rob.isFull()) {
+          rob.updateInstForIssue(issuee);
           ((IntDivide)fu).acceptIssue(issuee);
           pc.incrPC();
         }
@@ -60,11 +61,21 @@ public class IssueUnit {
       case BRANCH:
         fu = simulator.getBranchUnit();
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
+          rob.updateInstForIssue(issuee);
           ((BranchUnit)fu).acceptIssue(issuee);
           pc.incrPC();
         }
         break;
       case NONE:
+        if (issuee.getOpcode() == IssuedInst.INST_TYPE.STORE) {
+          if (rob.frontQ == rob.rearQ) {
+            rob.updateInstForIssue(issuee);
+            simulator.getCDB().setDataTag(issuee.regDestTag);
+            simulator.getCDB().setDataValue(issuee.getImmediate() + simulator.regs.getReg(issuee.getRegSrc1()));
+            simulator.getCDB().setDataValid(true);
+            pc.incrPC();
+          }
+        }
       default:
         return; 
         //TODO - implement halting/no op operation && store
