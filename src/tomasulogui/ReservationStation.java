@@ -66,6 +66,7 @@ public class ReservationStation {
   }
 
   public void loadInst(IssuedInst inst) {
+    function = inst.getOpcode();
     switch (inst.getOpcode()) {
       case ADD:
       case SUB:

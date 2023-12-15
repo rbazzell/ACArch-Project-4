@@ -6,12 +6,6 @@ public class IntAlu extends FunctionalUnit{
   public IntAlu(PipelineSimulator sim) {
     super(sim);
   }
-
-  public void execCycle(CDB cdb) {
-    if (canWriteback) {
-      stations[writebackEntry] = null;
-    }
-  }
  
   public int calculateResult(int station) {
     ReservationStation rest = stations[station];
