@@ -156,7 +156,6 @@ public class IssuedInst {
       else if (inst instanceof RTypeInst) {
         issued.decodeRType( (RTypeInst) inst);
       }
-
       return issued;
     }
 
