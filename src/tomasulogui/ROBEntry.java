@@ -16,7 +16,7 @@ public class ROBEntry {
   int storeMemoryLocation = -1;
   // NEED BRANCH TARGET LOCATION?
 
-  IssuedInst.INST_TYPE opcode;
+  IssuedInst.INST_TYPE opcode = null;
 
   public ROBEntry(ReorderBuffer buffer) {
     rob = buffer;
@@ -74,11 +74,14 @@ public class ROBEntry {
     
     //grab info from instruction to modify entry
     instPC = inst.getPC();
+    writeReg = inst.getRegDest();
+    opcode = inst.getOpcode();
     
 
 
     //update inst with data from entry
     inst.setRegDestTag(frontQ);
+    
 
     // TODO - This is a long and complicated method, probably the most complex
     // of the project.  It does 2 things:
