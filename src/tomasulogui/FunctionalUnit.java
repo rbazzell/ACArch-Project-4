@@ -16,6 +16,29 @@ public abstract class FunctionalUnit {
     simulator = sim;
   }
 
+  public int getWriteTag() {
+    return writeTag;
+  }
+
+  public int getWriteData() {
+    return writeData;
+  }
+
+  public int getWritebackEntry() {
+    return writebackEntry;
+  }
+
+  public void setWriteTag(int value) {
+    writeTag = value;
+  }
+  public void setWriteData(int value) {
+    writeData = value;
+  }
+  public void setWritebackEntry(int value) {
+    writebackEntry = value;
+  }
+  
+
   public void squashAll() {
     for (int i = 0; i < STATION_COUNT; i++) {
       stations[i] = null;

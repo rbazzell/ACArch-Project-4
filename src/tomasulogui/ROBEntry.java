@@ -42,7 +42,6 @@ public class ROBEntry {
     return opcode;
   }
 
-
   public boolean isHaltOpcode() {
     return (opcode == IssuedInst.INST_TYPE.HALT);
   }
@@ -72,7 +71,13 @@ public class ROBEntry {
   }
 
   public void copyInstData(IssuedInst inst, int frontQ) {
+    
+    //grab info from instruction to modify entry
     instPC = inst.getPC();
+    
+
+
+    //update inst with data from entry
     inst.setRegDestTag(frontQ);
 
     // TODO - This is a long and complicated method, probably the most complex
