@@ -23,9 +23,9 @@ public class IssueUnit {
     // 2. issuing to reservation station, if no structural hazard
     issuee = IssuedInst.createIssuedInst(inst);
     issuee.setPC(pc.getPC());
-    if (!rob.isFull()) {
+    /*if (!rob.isFull() && issuee.getOpcode() != IssuedInst.INST_TYPE.STORE) {
       rob.updateInstForIssue(issuee);
-    }
+    }*/
 
       // VVV Tells where to accept what VVV
     switch (getExecType(inst)) {
@@ -33,6 +33,7 @@ public class IssueUnit {
         fu = simulator.getLoader();
         if (((LoadBuffer)fu).isReservationStationAvail() && !rob.isFull()) {
           ((LoadBuffer)fu).acceptIssue(issuee);
+          rob.updateInstForIssue(issuee);
           pc.incrPC();
         }
         break;
@@ -40,6 +41,7 @@ public class IssueUnit {
         fu = simulator.getALU();
         if (((IntAlu)fu).isReservationStationAvail() && !rob.isFull()) {
           ((IntAlu)fu).acceptIssue(issuee);
+          rob.updateInstForIssue(issuee);
           pc.incrPC();
         }
         break;
@@ -47,6 +49,7 @@ public class IssueUnit {
         fu = simulator.getMult();
         if (((IntMult)fu).isReservationStationAvail() && !rob.isFull()) {
           ((IntMult)fu).acceptIssue(issuee);
+          rob.updateInstForIssue(issuee);
           pc.incrPC();
         }
         break;
@@ -54,6 +57,7 @@ public class IssueUnit {
         fu = simulator.getDivider();
         if (((IntDivide)fu).isReservationStationAvail() && !rob.isFull()) {
           ((IntDivide)fu).acceptIssue(issuee);
+          rob.updateInstForIssue(issuee);
           pc.incrPC();
         }
         break;
@@ -61,10 +65,17 @@ public class IssueUnit {
         fu = simulator.getBranchUnit();
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
           ((BranchUnit)fu).acceptIssue(issuee);
+          rob.updateInstForIssue(issuee);
           pc.incrPC();
         }
         break;
       case NONE:
+        if (issuee.getOpcode() != IssuedInst.INST_TYPE.STORE) {
+          if (rob.frontQ == rob.rearQ) {
+            rob.updateInstForIssue(issuee);
+            pc.incrPC();
+          }
+        }
       default:
         return; 
         //TODO - implement halting/no op operation && store

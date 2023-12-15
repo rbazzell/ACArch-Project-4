@@ -74,7 +74,7 @@ public class ROBEntry {
     
     //grab info from instruction to modify entry
     instPC = inst.getPC();
-    
+    writeReg = inst.getRegDest();
 
 
     //update inst with data from entry

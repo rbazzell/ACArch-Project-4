@@ -90,6 +90,7 @@ public class ReorderBuffer {
             }
             regs.squashAll();
             frontQ = 0;
+            rearQ = 0;
             return false;
           }
           break;
