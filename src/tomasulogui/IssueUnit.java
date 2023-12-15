@@ -83,10 +83,6 @@ public class IssueUnit {
             pc.incrPC();
           }
         }
-        if (issuee.getOpcode() == IssuedInst.INST_TYPE.HALT) {
-          rob.updateInstForIssue(issuee);
-          pc.incrPC();
-        }
       default:
         return; 
         //TODO - implement halting/no op operation && store

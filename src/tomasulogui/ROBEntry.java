@@ -82,15 +82,7 @@ public class ROBEntry {
     if (writeReg != -1) {
       rob.setTagForReg(writeReg, frontQ);
     }
-    else if (inst.determineIfBranch()) {
-      System.out.println(frontQ);
-      inst.setRegDestTag(frontQ);
-      inst.regDest = frontQ;
-    }
 
-    if (inst.getOpcode() == IssuedInst.INST_TYPE.HALT) {
-      complete = true;
-    }
     
 
 
