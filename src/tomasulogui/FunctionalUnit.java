@@ -62,12 +62,8 @@ public abstract class FunctionalUnit {
     }
     //if not waiting to write back, execute
     if (!requestWriteback) {
-      //if done, calculate result & request writeback
-      if (executing == getExecCycles()) {
-        requestWriteback = true;
-        writeData = calculateResult(writebackEntry);
       //if haven't started, start execution
-      } else if (executing == 0) {
+      if (executing == 0) {
         for (int i = 0; i < STATION_COUNT; i++) {
           ReservationStation rest = stations[i];
           if (rest != null) {
@@ -80,8 +76,13 @@ public abstract class FunctionalUnit {
             }
           }
         }
-      //if executing, keep executing
-      } else {
+      
+      }
+      if (executing == getExecCycles()) {//if done, calculate result & request writeback
+        requestWriteback = true;
+        writeData = calculateResult(writebackEntry);
+      }
+      if (0 < executing && executing < getExecCycles()) {//if executing, keep executing
         executing ++;
       }
     }

@@ -129,6 +129,7 @@ public class ReorderBuffer {
       // Check if tag points to active entry.
       if (tagEntry != null && tagEntry.complete == false) {
         tagEntry.setWriteValue(cdb.getDataValue());
+        tagEntry.complete = true;
       }
       // TODO: Handle stores
     }
