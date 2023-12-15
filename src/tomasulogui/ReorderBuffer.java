@@ -1,5 +1,7 @@
 package tomasulogui;
 
+import tomasulogui.IssuedInst.INST_TYPE;
+
 public class ReorderBuffer {
   public static final int size = 30;
   int frontQ = 0;
@@ -42,10 +44,12 @@ public class ReorderBuffer {
       throw new MIPSException("updateInstForIssue: no ROB slot avail");
     }
     ROBEntry newEntry = new ROBEntry(this);
-    buff[rearQ] = newEntry;
+    
     newEntry.copyInstData(inst, rearQ);
     if (inst.regSrc1Valid && inst.regSrc2Valid) {
+      buff[rearQ] = newEntry;
       newEntry.storeMemoryLocation = inst.regSrc1Value + inst.immediate;
+      
       rearQ = (rearQ + 1) % size;
       newEntry.writeValue = inst.regSrc2Value;
       newEntry.complete = true;
@@ -84,6 +88,10 @@ public class ReorderBuffer {
     }
     else {
       switch (retiree.getOpcode()) {
+        case JAL:
+        case JALR:
+          regs.setReg(31, retiree.instPC + 4);
+          regs.setSlotForReg(31, -1);
         case BEQ:
         case BNE:
         case BLTZ:
@@ -91,9 +99,8 @@ public class ReorderBuffer {
         case BGEZ:
         case BGTZ:
         case J:
-        case JAL:
         case JR:
-        case JALR:
+        
           if (retiree.branchMispredicted()) {
             // This is a mispredicted branch instruction.
             //  When this happens, need to clear the buffer
@@ -106,7 +113,18 @@ public class ReorderBuffer {
             for (int i=0; i < size; i++) {
               buff[i] = null;
             }
-            regs.squashAll();
+            shouldAdvance = false;
+
+            if (retiree.opcode == INST_TYPE.JR || retiree.opcode == INST_TYPE.JALR) {
+              simulator.setPC(retiree.rob.regs.getReg(31));
+            } else if (!retiree.predictTaken) {
+            //if taken
+              simulator.setPC(retiree.address);
+            } else {
+              //if not taken:
+              simulator.setPC(retiree.instPC + 4);
+            }
+            simulator.squashAllInsts();
             frontQ = 0;
             rearQ = 0;
             return false;
@@ -117,6 +135,8 @@ public class ReorderBuffer {
           //  to memory instead of to the register file.
           int storeAddress = retiree.getStoreAddress();
           simulator.getMemory().setIntDataAtAddr(storeAddress, retiree.getWriteValue());
+          break;
+        case NOP:
           break;
         default:
           // This is everything else.

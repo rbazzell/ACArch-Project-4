@@ -1,5 +1,7 @@
 package tomasulogui;
 
+import tomasulogui.IssuedInst.INST_TYPE;
+
 public class ROBEntry {
   ReorderBuffer rob;
 
@@ -8,6 +10,7 @@ public class ROBEntry {
   boolean complete = false;
   boolean predictTaken = false;
   boolean mispredicted = false;
+  int address = -1;
   int instPC = -1;
   int writeReg = -1;
   int writeValue = -1;
@@ -48,9 +51,7 @@ public class ROBEntry {
 
   public void setBranchTaken(boolean result) {
     // TODO - maybe more than simple set
-    if (result != predictTaken) {
-      mispredicted = true;
-    }
+    mispredicted = result != predictTaken;
   }
 
   public int getWriteReg() {
@@ -102,14 +103,14 @@ public class ROBEntry {
 
     
 
-    if (inst.regSrc1Used && inst.regSrc1Tag != -1 && rob.buff[inst.regSrc1Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
+    if (inst.regSrc1Used && inst.regSrc1Tag != -1 && rob.buff[inst.regSrc1Tag] != null && rob.buff[inst.regSrc1Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
       inst.setRegSrc1Value(rob.buff[inst.regSrc1Tag].getWriteValue());
       inst.setRegSrc1Valid();
     } else if (inst.regSrc1Used && inst.regSrc1Tag == -1) {
       inst.setRegSrc1Value(rob.getDataForReg(inst.regSrc1));
       inst.setRegSrc1Valid();
     }
-    if (inst.regSrc2Used && inst.regSrc2Tag != -1 && rob.buff[inst.regSrc2Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
+    if (inst.regSrc2Used && inst.regSrc2Tag != -1 && rob.buff[inst.regSrc2Tag] != null && rob.buff[inst.regSrc2Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
       inst.setRegSrc2Value(rob.buff[inst.regSrc2Tag].getWriteValue());
       inst.setRegSrc2Valid();
     } else if (inst.regSrc2Used && inst.regSrc2Tag == -1) {
@@ -127,7 +128,16 @@ public class ROBEntry {
     opcode = inst.getOpcode();
     if (writeReg > -1) { //for any insts that don't modify the registers
       rob.setTagForReg(writeReg, frontQ);
+    } 
+
+    if (opcode == INST_TYPE.JR || opcode == INST_TYPE.JALR) {
+      inst.setRegSrc1Value(inst.regSrc1);
     }
+    address = inst.getBranchTgt();
+    predictTaken = inst.getBranchPrediction();
+
+    //needs to add mispredict
+
     // TODO - This is a long and complicated method, probably the most complex
     // of the project.  It does 2 things:
     // 1. update the instruction, as shown in 2nd line of code above

@@ -1,0 +1,5 @@
+0:  ADDI R3, R0, 200
+LABEL Begin
+4:  ADDI R4, R0, 5000
+8:  BNE R4, R3, Begin
+12:  HALT

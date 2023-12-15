@@ -1,8 +1,7 @@
 Begin Assembly
-ADDI R3, R0, 200
-LABEL Begin
+ADDI R1, 4
 ADDI R4, R0, 5000
-BNE R4, R3, Begin
+JR R1
 HALT
 End Assembly
 -- begin main data

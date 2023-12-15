@@ -82,7 +82,7 @@ public class BranchPredictor {
     int counter = counters[pc / 4];
 
     if (taken) {
-      if ( (counter == 1) || (counter == 2)) {
+      if ((counter == 1) || (counter == 2)) {
         counter = 3;
       }
       else if (counter == 0) {

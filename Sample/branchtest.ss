@@ -1,0 +1,4 @@
+0:  ADDI R1, 4
+4:  ADDI R4, R0, 5000
+8:  JR R1
+12:  HALT

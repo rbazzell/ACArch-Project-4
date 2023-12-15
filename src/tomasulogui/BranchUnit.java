@@ -12,44 +12,25 @@ public class BranchUnit extends FunctionalUnit {
     ReservationStation rest = stations[station];
     switch (rest.getFunction()) {
       case BEQ:
-        if (rest.getData1() == rest.getData2()) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() == rest.getData2() ? 1 : 0;
       case BNE:
-        if (rest.getData1() != rest.getData2()) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() != rest.getData2() ? 1 : 0;
       case BLTZ:
-        if (rest.getData1() < 0) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() < 0 ? 1 : 0;
       case BLEZ:
-        if (rest.getData1() <= 0) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() <= 0 ? 1 : 0;
       case BGTZ:
-        if (rest.getData1() > 0) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() > 0 ? 1 : 0;
       case BGEZ:
-        if (rest.getData1() >= 0) {
-          return rest.address;
-        }
-        break;
+        return rest.getData1() >= 0 ? 1 : 0;
       case J:
       case JAL:
       case JR:
       case JALR:
-        return rest.address;
+        return rest.getData1();
       default:
         return 0;
     }
-    return 0;
   }
 
   public int getExecCycles() {

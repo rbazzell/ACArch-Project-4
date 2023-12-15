@@ -78,6 +78,8 @@ public class ReservationStation {
       case SLL:
       case SRL:
       case SRA:
+      case BEQ:
+      case BNE:
         destTag = inst.getRegDestTag();
         if (inst.getRegSrc1Valid()) {
           data1 = inst.getRegSrc1Value();
@@ -95,6 +97,10 @@ public class ReservationStation {
           data2 = inst.getImmediate();
           data2Valid = true;
         }
+
+        if (inst.determineIfBranch()) {
+          address = inst.getBranchTgt();
+        }
         break;
       case LOAD:
       case STORE:
@@ -102,8 +108,7 @@ public class ReservationStation {
       case ANDI:
       case ORI:
       case XORI:
-      case BEQ:
-      case BNE:
+      
       case BLTZ:
       case BLEZ:
       case BGTZ:
@@ -117,7 +122,7 @@ public class ReservationStation {
         } else {
           tag1 = inst.getRegSrc1Tag();
         }
-        data2 = inst.getImmediate(); //always use immed
+        data2 = inst.immediate; //always use immed
         data2Valid = true;
 
 
@@ -125,17 +130,20 @@ public class ReservationStation {
         destTag = inst.getRegDestTag();
 
         if (inst.determineIfBranch()) {
+          data2 = 0;
           address = inst.getBranchTgt();
         }
         break;
       case J:
       case JAL:
-        data1 = inst.getImmediate();
+        data1 = 0;
         data1Valid = true;
         data2 = 0;
         data2Valid = true;
         destTag = inst.getRegDestTag();
-        address = inst.branchTgt;
+        if (inst.determineIfBranch()) {
+          address = inst.getBranchTgt();
+        }
         break;
       default:
         break;

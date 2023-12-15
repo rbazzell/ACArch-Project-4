@@ -3,6 +3,8 @@ package tomasulogui;
 import java.io.*;
 import java.util.Scanner;
 
+import tomasulogui.IssuedInst.INST_TYPE;
+
 public class PipelineSimulator {
 
   private enum Command {
@@ -418,11 +420,18 @@ public class PipelineSimulator {
         branchUnit.setCanWriteback();
         int branchTag = branchUnit.getWriteTag();
         boolean branchTaken = false;
+        if (reorder.buff[branchTag] != null && (reorder.buff[branchTag].opcode == INST_TYPE.J || reorder.buff[branchTag].opcode == INST_TYPE.JAL)) {
+          return;
+        }
         if (branchUnit.getWriteData() != 0) {
           branchTaken = true;
         }
-        reorder.buff[branchTag].setBranchTaken(branchTaken);
-        reorder.buff[branchTag].complete = true;
+        if (reorder.buff[branchTag] != null && !reorder.buff[branchTag].mispredicted) {
+          reorder.buff[branchTag].setBranchTaken(branchTaken);
+        }
+        if (reorder.buff[branchTag] != null) {
+          reorder.buff[branchTag].complete = true;
+        }
       }
     }
 /*

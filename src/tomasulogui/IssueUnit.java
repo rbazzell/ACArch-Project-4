@@ -1,5 +1,7 @@
 package tomasulogui;
 
+import tomasulogui.IssuedInst.INST_TYPE;
+
 public class IssueUnit {
   private enum EXEC_TYPE {
     NONE, LOAD, ALU, MULT, DIV, BRANCH} ;
@@ -61,19 +63,20 @@ public class IssueUnit {
       case BRANCH:
         fu = simulator.getBranchUnit();
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
+          simulator.btb.predictBranch(issuee);
           rob.updateInstForIssue(issuee);
           ((BranchUnit)fu).acceptIssue(issuee);
-          System.out.println(issuee.getRegDestTag());
-          // In theory, this sets the PC, but if not use the code below it.
-          simulator.btb.predictBranch(issuee);
-          System.out.println(((BranchUnit)fu).getWriteTag());
-          /*if (issuee.getBranchPrediction() == true) {
-            pc.setPC(issuee.getBranchTgt());
+          if (issuee.opcode == INST_TYPE.J || issuee.opcode == INST_TYPE.JAL) {
+            rob.buff[rob.rearQ - 1].complete = true;
+            rob.buff[rob.rearQ - 1].mispredicted = false;
           }
-          else {
-            pc.incrPC();
-          }*/
-          System.out.println(issuee.branch);
+          if (issuee.opcode == INST_TYPE.JR || issuee.opcode == INST_TYPE.JALR) {
+            rob.buff[rob.rearQ - 1].mispredicted = true;
+            rob.buff[rob.rearQ - 1].complete = true;
+          }
+          if (issuee.opcode == INST_TYPE.JAL || issuee.opcode == INST_TYPE.JALR) {
+            rob.setTagForReg(31, rob.rearQ);
+          }
         }
         break;
       case NONE:
@@ -83,8 +86,13 @@ public class IssueUnit {
           }
           
         }
-        if (issuee.getOpcode() == IssuedInst.INST_TYPE.HALT) {
+        else if (issuee.getOpcode() == IssuedInst.INST_TYPE.HALT) {
           rob.updateInstForIssue(issuee);
+          pc.incrPC();
+        }
+        else if (issuee.getOpcode() == IssuedInst.INST_TYPE.NOP) {
+          rob.updateInstForIssue(issuee);
+          rob.buff[rob.rearQ - 1].complete = true;
           pc.incrPC();
         }
       default:
