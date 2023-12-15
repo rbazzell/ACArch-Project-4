@@ -17,6 +17,9 @@
       -- 
 0:  ADDI R1, R0, 4000
 4:  LW R2, 0(R1)
-8:  ADD R2, R2, R2
-12:  SW R2, 4(R1)
-16:  HALT
+8:  ADDI R3, R0, 3
+12:  ADD R2, R2, R2
+16:  MUL R4, R2, R3
+20:  ADD R2, R2, R2
+24:  SW R2, 4(R1)
+28:  HALT
