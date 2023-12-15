@@ -81,11 +81,15 @@ public class ReorderBuffer {
             // This is a mispredicted branch instruction.
             //  When this happens, need to clear the buffer
             //  and commit real branch target to PC.
+            //  Advance is also handled here.
             // Need an accepting function here?
+
+            // Clear entire ROB and set new values for ROB
             for (int i=0; i < size; i++) {
               buff[i] = null;
             }
             regs.squashAll();
+            frontQ = 0;
             return false;
           }
           break;
@@ -120,7 +124,12 @@ public class ReorderBuffer {
     // could be store address source
 
     // TODO body of method
-    cdb.getDataTag();
+    ROBEntry tagEntry = buff[cdb.getDataTag()];
+    // Check if tag points to active entry.
+    if (tagEntry != null && tagEntry.complete == false) {
+      tagEntry.setWriteValue(cdb.getDataValue());
+    }
+    // TODO: Handle stores
   }
 
   public void updateInstForIssue(IssuedInst inst) {

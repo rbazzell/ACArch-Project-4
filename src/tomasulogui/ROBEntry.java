@@ -12,6 +12,7 @@ public class ROBEntry {
   int writeReg = -1;
   int writeValue = -1;
   // Register storing memory location for stores
+  // MIGHT NOT NEED THIS IF IT'S JUST FROM CDB
   int memoryLocationReg = -1;
   // NEED BRANCH TARGET LOCATION?
 
@@ -47,7 +48,7 @@ public class ROBEntry {
   }
 
   public void setBranchTaken(boolean result) {
-  // TODO - maybe more than simple set
+    // TODO - maybe more than simple set
   }
 
   public int getWriteReg() {
