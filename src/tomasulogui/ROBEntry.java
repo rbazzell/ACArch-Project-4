@@ -117,8 +117,9 @@ public class ROBEntry {
     instPC = inst.getPC();
     writeReg = inst.getRegDest();
     opcode = inst.getOpcode();
-    rob.setTagForReg(writeReg, frontQ);
-    
+    if (writeReg > -1) { //for any insts that don't modify the registers
+      rob.setTagForReg(writeReg, frontQ);
+    }
     // TODO - This is a long and complicated method, probably the most complex
     // of the project.  It does 2 things:
     // 1. update the instruction, as shown in 2nd line of code above

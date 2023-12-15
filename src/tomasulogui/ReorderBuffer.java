@@ -36,8 +36,9 @@ public class ReorderBuffer {
     return numRetirees;
   }
 
-  public void acceptStore(IssuedInst instruction) {
+  public void acceptStore(IssuedInst inst) {
     // TODO: Read value for reference register.
+    
   }
 
   public boolean retireInst() {
