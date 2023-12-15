@@ -91,12 +91,12 @@ public class IssueUnit {
      * 
      * 
      * We then send this to the ROB, which fills in the data fields
-     * TODO INSIDE FU
+     * TODO
      * 
      * 
      * We then check the CDB, and see if it is broadcasting data we need,
      *    so that we can forward during issue
-     * TODO INSIDE FU
+     * TODO
     */
   }
     
