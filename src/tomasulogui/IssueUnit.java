@@ -63,7 +63,7 @@ public class IssueUnit {
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
           rob.updateInstForIssue(issuee);
           ((BranchUnit)fu).acceptIssue(issuee);
-          pc.incrPC();
+          simulator.btb.predictBranch(issuee);
         }
         break;
       case NONE:
