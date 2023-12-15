@@ -104,17 +104,17 @@ public class LoadBuffer {
   public void acceptIssue(IssuedInst inst) {
     int slot=0;
     for (slot=0; slot < BUFFER_SIZE; slot++) {
-     if (buff[slot] == null) {
+      if (buff[slot] == null) {
        break;
-     }
-   }
-   if (slot == BUFFER_SIZE) {
-     throw new MIPSException("Loader accept issue: slot not available");
-   }
+      }
+    }
+    if (slot == BUFFER_SIZE) {
+      throw new MIPSException("Loader accept issue: slot not available");
+    }
 
-   LoadEntry entry = new LoadEntry();
-   buff[slot] = entry;
+    LoadEntry entry = new LoadEntry();
+    buff[slot] = entry;
 
-   entry.loadInst (inst);
+    entry.loadInst(inst);
   }
 }

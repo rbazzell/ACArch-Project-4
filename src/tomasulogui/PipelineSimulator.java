@@ -124,7 +124,7 @@ public class PipelineSimulator {
 
       Command command = Command.UNUSED;
 
-      while (command != command.EXIT) {
+      while (command != Command.EXIT) {
         printMenu();
         command = getCommand();
 

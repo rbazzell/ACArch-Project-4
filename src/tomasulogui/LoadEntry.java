@@ -30,6 +30,7 @@ public class LoadEntry {
       }
     }
   }
+  
   public void loadInst(IssuedInst inst) {
     destTag = inst.getRegDestTag();
     if (inst.getRegSrc1Valid()) {
