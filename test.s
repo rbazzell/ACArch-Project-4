@@ -19,6 +19,7 @@ Begin Assembly
 ADDI R1, R0, 4000
 LW R2, 0(R1)
 ADD R2, R2, R2
+SW R2, 4(R1)
 HALT
 End Assembly
 -- begin main data

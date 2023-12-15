@@ -75,8 +75,10 @@ public class IssueUnit {
         break;
       case NONE:
         if (issuee.getOpcode() == IssuedInst.INST_TYPE.STORE) {
-          rob.updateInstForIssue(issuee);
-          pc.incrPC();
+          if (rob.acceptStore(issuee)) {
+            pc.incrPC();
+          }
+          
         }
         if (issuee.getOpcode() == IssuedInst.INST_TYPE.HALT) {
           rob.updateInstForIssue(issuee);

@@ -81,7 +81,7 @@ public class ROBEntry {
     // VVV this for loop is funny looking, but does what I want it to
     // VVV hahaha it's only 1:45am - this will be rough
     // now it's 4:15am - it has been rough
-    for (int tag = rob.frontQ; tag != rob.rearQ; tag = (tag + 1) % ReorderBuffer.size) {
+    /*for (int tag = rob.frontQ; tag != rob.rearQ + 1; tag = (tag + 1) % ReorderBuffer.size) {
       ROBEntry entry = rob.buff[tag];
       if (inst.regSrc1Used && entry.writeReg == inst.regSrc1 && entry.isComplete()) { //if regSrc1 in rob and valid, forward
         inst.setRegSrc1Value(entry.writeValue);
@@ -91,23 +91,31 @@ public class ROBEntry {
         inst.setRegSrc2Value(entry.writeValue);
         inst.setRegSrc2Valid();
       }
-    }
+    }*/
 
-    if (inst.regSrc1Used && !inst.getRegSrc1Valid()) {
+    if (inst.regSrc1Used) {
       inst.setRegSrc1Tag(rob.getTagForReg(inst.regSrc1));
     }
-    if (inst.regSrc2Used && !inst.getRegSrc2Valid()) {
+    if (inst.regSrc2Used) {
       inst.setRegSrc2Tag(rob.getTagForReg(inst.regSrc2));
     }
 
-    if (inst.regSrc1Used && !inst.getRegSrc1Valid() && inst.regSrc1Tag == -1) { // if src1 not in rob (complete or tagged), go to reg
+    
+
+    if (inst.regSrc1Used && inst.regSrc1Tag != -1 && rob.buff[inst.regSrc1Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
+      inst.setRegSrc1Value(rob.buff[inst.regSrc1Tag].getWriteValue());
+      inst.setRegSrc1Valid();
+    } else if (inst.regSrc1Used && inst.regSrc1Tag == -1) {
       inst.setRegSrc1Value(rob.getDataForReg(inst.regSrc1));
       inst.setRegSrc1Valid();
     }
-    if (inst.regSrc2Used && !inst.getRegSrc2Valid() && inst.regSrc2Tag == -1) { // if src2 not in rob (complete or tagged), go to reg
+    if (inst.regSrc2Used && inst.regSrc2Tag != -1 && rob.buff[inst.regSrc2Tag].isComplete()) {// if src1 not in rob (complete or tagged), go to reg
+      inst.setRegSrc2Value(rob.buff[inst.regSrc2Tag].getWriteValue());
+      inst.setRegSrc2Valid();
+    } else if (inst.regSrc2Used && inst.regSrc2Tag == -1) {
       inst.setRegSrc2Value(rob.getDataForReg(inst.regSrc2));
       inst.setRegSrc2Valid();
-    } 
+    }
     
     if (inst.regDestUsed) {
       inst.setRegDestTag(frontQ);
