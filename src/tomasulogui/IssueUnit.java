@@ -63,14 +63,17 @@ public class IssueUnit {
         if (((BranchUnit)fu).isReservationStationAvail() && !rob.isFull()) {
           rob.updateInstForIssue(issuee);
           ((BranchUnit)fu).acceptIssue(issuee);
+          System.out.println(issuee.getRegDestTag());
           // In theory, this sets the PC, but if not use the code below it.
           simulator.btb.predictBranch(issuee);
+          System.out.println(((BranchUnit)fu).getWriteTag());
           /*if (issuee.getBranchPrediction() == true) {
             pc.setPC(issuee.getBranchTgt());
           }
           else {
             pc.incrPC();
           }*/
+          System.out.println(issuee.branch);
         }
         break;
       case NONE:

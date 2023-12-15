@@ -13,39 +13,39 @@ public class BranchUnit extends FunctionalUnit {
     switch (rest.getFunction()) {
       case BEQ:
         if (rest.getData1() == rest.getData2()) {
-          return 1;
+          return rest.address;
         }
         break;
       case BNE:
         if (rest.getData1() != rest.getData2()) {
-          return 1;
+          return rest.address;
         }
         break;
       case BLTZ:
         if (rest.getData1() < 0) {
-          return 1;
+          return rest.address;
         }
         break;
       case BLEZ:
         if (rest.getData1() <= 0) {
-          return 1;
+          return rest.address;
         }
         break;
       case BGTZ:
         if (rest.getData1() > 0) {
-          return 1;
+          return rest.address;
         }
         break;
       case BGEZ:
         if (rest.getData1() >= 0) {
-          return 1;
+          return rest.address;
         }
         break;
       case J:
       case JAL:
       case JR:
       case JALR:
-        return 1;
+        return rest.address;
       default:
         return 0;
     }
