@@ -124,7 +124,7 @@ public class PipelineSimulator {
 
       Command command = Command.UNUSED;
 
-      while (command != command.EXIT) {
+      while (command != Command.EXIT) {
         printMenu();
         command = getCommand();
 
@@ -375,10 +375,10 @@ public class PipelineSimulator {
       regs.squashAll();
 
       loader.squashAll();
-//      alu.squashAll();
-//      multiplier.squashAll();
-//      divider.squashAll();
-//      branchUnit.squashAll();
+      alu.squashAll();
+      multiplier.squashAll();
+      divider.squashAll();
+      branchUnit.squashAll();
       cdb.squashAll();
     }
 
@@ -389,7 +389,7 @@ public class PipelineSimulator {
       cdb.setDataValid(false);
 
       // hint: start with divider, and give it first chance of getting CDB
-      /*if (divider.isRequestingWriteback()) {
+      if (divider.isRequestingWriteback()) {
         divider.setCanWriteback();
         cdb.setDataTag(divider.getWriteTag());
         cdb.setDataValue(divider.getWriteData());
@@ -407,7 +407,7 @@ public class PipelineSimulator {
         cdb.setDataValue(alu.getWriteData());
         cdb.setDataValid(true);
       }
-      else */if (loader.isRequestingWriteback()) {
+      else if (loader.isRequestingWriteback()) {
         loader.setCanWriteback();
         cdb.setDataTag(loader.getWriteTag());
         cdb.setDataValue(loader.getWriteData());

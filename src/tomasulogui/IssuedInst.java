@@ -207,7 +207,6 @@ public class IssuedInst {
           return INST_TYPE.XOR;
         case Instruction.INST_XORI:
           return INST_TYPE.XORI;
-
         case Instruction.INST_SLL:
           return INST_TYPE.SLL;
         case Instruction.INST_SRL:
