@@ -82,23 +82,38 @@ public class ROBEntry {
 
     //update inst with data from entry
     // all src regs will either be assigned a tag, read from reg, or forwarded from ROB
-    inst.setRegDestTag(frontQ);
+    if (inst.regDestUsed) {
+      inst.setRegDestTag(frontQ);
+    }
     // VVV this for loop is funny looking, but does what I want it to
     // VVV hahaha it's only 1:45am - this will be rough
+    if (inst.regSrc1Used) {
+      inst.setRegSrc1Tag(rob.getTagForReg(inst.regSrc1));
+    }
+    if (inst.regSrc2Used) {
+      inst.setRegSrc2Tag(rob.getTagForReg(inst.regSrc2));
+    }
+
     for (int tag = rob.rearQ; tag != frontQ; tag = (tag + 1) % ReorderBuffer.size) {
       ROBEntry entry = rob.buff[tag];
-      if (entry.writeReg == inst.regSrc1) { //if regSrc1 in rob 
-        if (entry.isComplete()) { //valid! --> forward
-          inst.setRegSrc1Value(entry.writeValue);
-          inst.setRegSrc1Valid();
-        } else { //not yet read --> give tag value so it can snoop cdb
-          inst.setRegSrc1Tag(rob.getTagForReg(inst.regSrc1));
-        }
-      } else { // not in rob, grab value from reg
-        inst.setRegSrc1Value(rob.getDataForReg(inst.regSrc1));
+      if (inst.regSrc1Used && entry.writeReg == inst.regSrc1 && entry.isComplete()) { //if regSrc1 in rob and valid, forward
+        inst.setRegSrc1Value(entry.writeValue);
         inst.setRegSrc1Valid();
       }
+      if (inst.regSrc2Used && entry.writeReg == inst.regSrc2 && entry.isComplete()) { //if regSrc2 in rob and valid, forward
+        inst.setRegSrc2Value(entry.writeValue);
+        inst.setRegSrc2Valid();
+      }
     }
+
+    if (inst.regSrc1Used && !inst.getRegSrc1Valid() && inst.regSrc1Tag == -1) { // if src1 not in rob (complete or tagged), go to reg
+      inst.setRegSrc1Value(rob.getDataForReg(inst.regSrc1));
+      inst.setRegSrc1Valid();
+    }
+    if (inst.regSrc2Used && !inst.getRegSrc2Valid() && inst.regSrc2Tag == -1) { // if src2 not in rob (complete or tagged), go to reg
+      inst.setRegSrc2Value(rob.getDataForReg(inst.regSrc2));
+      inst.setRegSrc2Valid();
+    } 
 
     
 
