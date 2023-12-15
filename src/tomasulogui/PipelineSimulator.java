@@ -389,7 +389,30 @@ public class PipelineSimulator {
       cdb.setDataValid(false);
 
       // hint: start with divider, and give it first chance of getting CDB
-
+      /*if (divider.isRequestingWriteback()) {
+        divider.setCanWriteback();
+        cdb.setDataTag(divider.getWriteTag());
+        cdb.setDataValue(divider.getWriteData());
+        cdb.setDataValid(true);
+      }
+      else if (multiplier.isRequestingWriteback()) {
+        multiplier.setCanWriteback();
+        cdb.setDataTag(multiplier.getWriteTag());
+        cdb.setDataValue(multiplier.getWriteData());
+        cdb.setDataValid(true);
+      }
+      else if (alu.isRequestingWriteback()) {
+        alu.setCanWriteback();
+        cdb.setDataTag(alu.getWriteTag());
+        cdb.setDataValue(alu.getWriteData());
+        cdb.setDataValid(true);
+      }
+      else */if (loader.isRequestingWriteback()) {
+        loader.setCanWriteback();
+        cdb.setDataTag(loader.getWriteTag());
+        cdb.setDataValue(loader.getWriteData());
+        cdb.setDataValid(true);
+      }
     }
 
     public static void main(String[] args) {
