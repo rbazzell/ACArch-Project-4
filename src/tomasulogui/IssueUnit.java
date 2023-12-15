@@ -72,6 +72,7 @@ public class IssueUnit {
             rob.updateInstForIssue(issuee);
             simulator.getCDB().setDataTag(issuee.regDestTag);
             simulator.getCDB().setDataValue(issuee.getImmediate() + simulator.regs.getReg(issuee.getRegSrc1()));
+            simulator.getCDB().setDataValid(true);
             pc.incrPC();
           }
         }
