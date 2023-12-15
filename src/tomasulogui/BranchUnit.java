@@ -14,7 +14,6 @@ public class BranchUnit
     switch (rest.getFunction()) {
       case BEQ:
         if (rest.getData1() == rest.getData2()) {
-          rest.getDestTag();
           return 1;
         }
         break;
