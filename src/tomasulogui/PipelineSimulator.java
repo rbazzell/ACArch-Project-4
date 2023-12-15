@@ -418,13 +418,11 @@ public class PipelineSimulator {
         branchUnit.setCanWriteback();
         int branchTag = branchUnit.getWriteTag();
         boolean branchTaken = false;
-        if (branchUnit.getWriteData() == 1) {
+        if (branchUnit.getWriteData() != 0) {
           branchTaken = true;
         }
-        else if (branchUnit.getWriteData() == 0) {
-          branchTaken = false;
-        }
         reorder.buff[branchTag].setBranchTaken(branchTaken);
+        reorder.buff[branchTag].complete = true;
       }
     }
 /*

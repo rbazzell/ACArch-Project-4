@@ -108,11 +108,11 @@ public class ROBEntry {
       inst.setRegSrc2Value(rob.getDataForReg(inst.regSrc2));
       inst.setRegSrc2Valid();
     } 
-    
-    if (inst.regDestUsed) {
+    // Possibly change for branch issue?
+    if (inst.regDestUsed || inst.determineIfBranch()) {
       inst.setRegDestTag(frontQ);
     }
-        
+     
     //grab info from instruction to modify entry
     instPC = inst.getPC();
     writeReg = inst.getRegDest();

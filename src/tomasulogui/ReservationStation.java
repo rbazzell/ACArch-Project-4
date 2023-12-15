@@ -120,9 +120,13 @@ public class ReservationStation {
         data2 = inst.getImmediate(); //always use immed
         data2Valid = true;
 
-        //if src2used, then it is a control op, so no dest
+        /*//if src2used, then it is a control op, so no dest
         if (!inst.regSrc2Used) {
           destTag = inst.getRegDestTag();
+        }TODO: CHECK THIS IS RIGHT*/
+        destTag = inst.getRegDestTag();
+        if (inst.determineIfBranch()) {
+          address = inst.getBranchTgt();
         }
         break;
       case J:
@@ -131,6 +135,7 @@ public class ReservationStation {
         data1Valid = true;
         data2 = 0;
         data2Valid = true;
+        address = inst.branchTgt;
         break;
       default:
         break;
